@@ -1,25 +1,30 @@
-import requests, os, time
+import os
+import time
+
 import pandas as pd
-import numpy as np
-from scraping_headers import finviz_headers, base_url, mm_params, position, technical_numeric_list, technical_percentage_list
-from scraping_misc import parse_total_stocks, return_filename, convert_datatypes_technical, trend_template_filter
-from scraping_misc import return_single_table_from_finviz
-from bs4 import BeautifulSoup
+
+from scraping_var_functions import base_url, mm_params, position
+from scraping_var_functions import return_filename, convert_datatypes_technical, trend_template_filter
+from scraping_var_functions import return_single_table_from_finviz
 
 
 def scrap_TT():
 
+# Check if the program has been run today
     filename = return_filename()
     if os.path.isfile(filename):
         return pd.read_csv(filename, index_col='Ticker')
 
+# Check amount of stocks and determine the pages required to click through finviz
     trial = return_single_table_from_finviz(position, base_url, mm_params, True)
     total = trial[1]
-
     results = trial[0]
     print(total)
-    total = 60
 
+#    total = 60
+#   uncomment total for testing purposes
+
+# Loop through finviz scrapping the entire list
     for _ in list(range(21, total, 20)):
         mm_params['r'] = _
         new_frame = return_single_table_from_finviz(position, base_url, mm_params)

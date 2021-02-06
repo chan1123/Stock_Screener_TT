@@ -1,8 +1,12 @@
-import requests, os, time
+import os
 import pandas as pd
-from scraping_headers import finviz_headers, base_url, mm_params, position, technical_numeric_list, technical_percentage_list
+import requests
+import time
 from scraping_misc import parse_total_stocks, return_filename
-from bs4 import BeautifulSoup
+
+from scraping_var_functions import finviz_headers, base_url, mm_params, position, technical_numeric_list, \
+    technical_percentage_list
+
 
 def return_single_table_from_finviz(position, base_url, parameters, show_stocks=False):
     """
